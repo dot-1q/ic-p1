@@ -18,11 +18,12 @@ int main(int argc, char *argcv[])
     {
         for(int j = 0;j<input.cols;j++)
        {
-            output.at<Vec3b>(i,j) = input.at<Vec3b>(i,j);
+            output.at<Vec3b>(i,j)[0] = input.at<Vec3b>(i,j)[0]>>1;
+            output.at<Vec3b>(i,j)[1] = input.at<Vec3b>(i,j)[1]>>1;
+            output.at<Vec3b>(i,j)[2] = input.at<Vec3b>(i,j)[2]>>1;
         }
     }
-    
-    resize(output, output,Size(output.cols*0.75,output.rows*0.75),INTER_NEAREST);
+   
     imwrite(argcv[2],output);
     return 0;
 }

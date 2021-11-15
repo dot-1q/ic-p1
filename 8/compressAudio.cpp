@@ -15,7 +15,7 @@ int main(int argc, char *argcv[])
     newFile.setNumChannels(audioFile.getNumChannels());
     //ciar novo ficheiro como o mesmo numero de samples
     newFile.setNumSamplesPerChannel(audioFile.getNumSamplesPerChannel());
-    cout <<"Numero de samples " << newFile.getNumSamplesPerChannel() << endl;
+    cout <<"Numero de samples " << audioFile.getNumSamplesPerChannel() << endl;
     cout <<"Bit Depth " << audioFile.getBitDepth() << endl;
 
     
@@ -24,13 +24,25 @@ int main(int argc, char *argcv[])
         for(int channel = 0; channel < audioFile.getNumChannels(); channel++)
         {
             double currentSample = audioFile.samples[channel][i];
-            newFile.samples[channel][i] = currentSample;
+            // descartar 70% dos bits da sample original, multiplicando por 0.3
+            newFile.samples[channel][i] = currentSample * 0.3f;
         }
     }
-
     newFile.setSampleRate(audioFile.getSampleRate()); 
-    newFile.setBitDepth(8); 
     newFile.save(argcv[2],AudioFileFormat::Wave);
+
+    // Comparar samples de ambos os ficheiros
+    for (int i=0;i<newFile.getNumSamplesPerChannel();i++)
+    {
+        for(int channel = 0; channel < audioFile.getNumChannels(); channel++)
+        {
+            double sampleOriginal = audioFile.samples[channel][i];
+            double sampleFinal = newFile.samples[channel][i];
+            cout << "Sample original: " << sampleOriginal << endl;
+            cout << "Sample final: " << sampleFinal << endl;
+            cout << "Diferença Percentual: " << ((sampleOriginal-sampleFinal)/sampleOriginal)*100 << "%" << endl;
+        }
+    }
     return 0;
 }
 
