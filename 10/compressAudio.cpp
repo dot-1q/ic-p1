@@ -1,49 +1,36 @@
 #include "AudioFile/AudioFile.h"
 #include <iostream>
 #include <ostream>
+#include <math.h>
 
 using namespace std;
 
 int main(int argc, char *argcv[])
 {
-    AudioFile<double> audioFile;
-    AudioFile<double> newFile;
-    double soma = 0;
+    AudioFile<double> originalFile;
+    AudioFile<double> pressedFile;
+    double Ex = 0, Er=0;
 
 
-    audioFile.load("file_example_WAV_1MG.wav");
+    originalFile.load("file_example_WAV_1MG.wav");
+    pressedFile.load("compressed.wav");
 
-    newFile.setNumChannels(audioFile.getNumChannels());
-    //ciar novo ficheiro como o mesmo numero de samples
-    newFile.setNumSamplesPerChannel(audioFile.getNumSamplesPerChannel());
-    cout <<"Numero de samples " << audioFile.getNumSamplesPerChannel() << endl;
-    cout <<"Bit Depth " << audioFile.getBitDepth() << endl;
 
     
-    for (int i=0;i<newFile.getNumSamplesPerChannel();i++)
+    for (int i=0;i<pressedFile.getNumSamplesPerChannel();i++)
     {
-        for(int channel = 0; channel < audioFile.getNumChannels(); channel++)
+        for(int channel = 0; channel < originalFile.getNumChannels(); channel++)
         {
-            double currentSample = audioFile.samples[channel][i];       //Aceder a cada sample individuamente
+            double originalSample = originalFile.samples[channel][i];       //Aceder a cada sample individuamente
+            double compSample = pressedFile.samples[channel][i];
             // elevar ao quadrado e somar
-            soma = soma + (currentSample * currentSample);
+            Ex = Ex + pow(originalSample,2);
+            Er = Er + pow((originalSample - compSample), 2);
         }
     }
-    newFile.setSampleRate(audioFile.getSampleRate()); 
-    newFile.save(argcv[2],AudioFileFormat::Wave);
-
-    // Comparar samples de ambos os ficheiros
-    for (int i=0;i<newFile.getNumSamplesPerChannel();i++)
-    {
-        for(int channel = 0; channel < audioFile.getNumChannels(); channel++)
-        {
-            double sampleOriginal = audioFile.samples[channel][i];
-            double sampleFinal = newFile.samples[channel][i];
-            cout << "Sample original: " << sampleOriginal << endl;
-            cout << "Sample final: " << sampleFinal << endl;
-            cout << "Diferença Percentual: " << ((sampleOriginal-sampleFinal)/sampleOriginal)*100 << "%" << endl;
-        }
-    }
+    
+    
+    cout << "SNR: " << 10 * log10(Ex/Er) <<endl;
     return 0;
 }
 
