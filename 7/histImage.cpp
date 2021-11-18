@@ -1,3 +1,5 @@
+#include <cmath>
+#include <opencv4/opencv2/core/hal/interface.h>
 #include <opencv4/opencv2/core/matx.hpp>
 #include <opencv4/opencv2/highgui.hpp>
 #include <opencv4/opencv2/imgcodecs.hpp>
@@ -17,50 +19,91 @@ int main(int argc, char *argcv[]){
     std::ofstream greenFile ("green.txt");
     std::ofstream blueFile ("blue.txt");
     std::ofstream greyscaleFile ("greyscale.txt");
-
-    // Load the Image File
+    // array que vai conter o numero de vezes que determinado byte ocorre | Array iniciado com as ocorrencias a zero
+    int byteArray[256] = { };
 
     std::cout << "BEGINING COLOR CHANNELS ..." << std::endl;
     // Variable to store the byte from each channel
-    double byteFromPixel;
-
+    int byteFromPixel;
     // Get all the bytes from the red channel 
     for (int i = 0; i < inputFile.rows; i++)
     {
         for(int j = 0; j<inputFile.cols;j++)
         {
             byteFromPixel = inputFile.at<Vec3b>(i,j)[0];
+            byteArray[byteFromPixel]++;
             redFile << byteFromPixel <<std::endl; 
         }
     }
-
     // Get all the bytes from the green channel 
     for (int i = 0; i < inputFile.rows; i++)
     {
         for(int j = 0; j<inputFile.cols;j++)
         {
             byteFromPixel = inputFile.at<Vec3b>(i,j)[1];
+            byteArray[byteFromPixel]++;
             greenFile << byteFromPixel <<std::endl; 
         }
     }
-
     // Get all the bytes from the blue channel 
     for (int i = 0; i < inputFile.rows; i++)
     {
         for(int j = 0; j<inputFile.cols;j++)
         {
             byteFromPixel = inputFile.at<Vec3b>(i,j)[2];
+            byteArray[byteFromPixel]++;
             blueFile << byteFromPixel <<std::endl; 
         }
     }
-    
     redFile.close();
     greenFile.close();
     blueFile.close();
     std::cout << "COLOR CHANNELS DONE!" << std::endl;
+    
+
+    std::cout << "Calculating Entropy" << std::endl;
+    float entropy = 0;
+    float p = 0;
+    float sizeInBytes = inputFile.total() * inputFile.elemSize();
+    for(int k = 0; k<256;k++)
+    {
+        if(byteArray[k] > 0)
+        {
+            p = byteArray[k] / sizeInBytes;
+            entropy = entropy - (p*(log(p)/log(256)));
+        }
+    }
+    std::cout << "Entropy of file: " << (entropy) << std::endl;
+
 
     std::cout << "BEGINING GREYSCALE IMAGE ..." << std::endl;
     cvtColor(inputFile, greyScale, COLOR_RGB2GRAY);
     imwrite("greyscale.jpg", greyScale);
+
+    int byteArrayGS[256] = { };
+    // Get all the bytes from the greyscale image 
+    for (int i = 0; i < greyScale.rows; i++)
+    {
+        for(int j = 0; j<greyScale.cols;j++)
+        {
+            byteFromPixel = greyScale.at<uchar>(i,j);
+            byteArrayGS[byteFromPixel]++;
+            greyscaleFile << byteFromPixel <<std::endl; 
+        }
+    }
     std::cout << "GREYSCALE IMAGE DONE" << std::endl;
+    
+    std::cout << "Calculating GreyScale Entropy" << std::endl;
+    sizeInBytes = greyScale.total() * greyScale.elemSize();
+    entropy = 0;
+    p = 0;
+    for(int k = 0; k<256;k++)
+    {
+        if(byteArrayGS[k] > 0)
+        {
+            p = byteArrayGS[k] / sizeInBytes;
+            entropy = entropy - (p*(log(p)/log(256)));
+        }
+    }
+    std::cout << "Entropy of GreyScale file: " << (entropy) << std::endl;
 } 
