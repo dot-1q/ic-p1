@@ -26,33 +26,18 @@ int main(int argc, char *argcv[]){
     // Variable to store the byte from each channel
     int byteFromPixel;
     // Get all the bytes from the red channel 
-    for (int i = 0; i < inputFile.rows; i++)
+    for(int channel=0; channel< inputFile.channels();channel++)
     {
-        for(int j = 0; j<inputFile.cols;j++)
+        for (int i = 0; i < inputFile.rows; i++)
         {
-            byteFromPixel = inputFile.at<Vec3b>(i,j)[0];
-            byteArray[byteFromPixel]++;
-            redFile << byteFromPixel <<std::endl; 
-        }
-    }
-    // Get all the bytes from the green channel 
-    for (int i = 0; i < inputFile.rows; i++)
-    {
-        for(int j = 0; j<inputFile.cols;j++)
-        {
-            byteFromPixel = inputFile.at<Vec3b>(i,j)[1];
-            byteArray[byteFromPixel]++;
-            greenFile << byteFromPixel <<std::endl; 
-        }
-    }
-    // Get all the bytes from the blue channel 
-    for (int i = 0; i < inputFile.rows; i++)
-    {
-        for(int j = 0; j<inputFile.cols;j++)
-        {
-            byteFromPixel = inputFile.at<Vec3b>(i,j)[2];
-            byteArray[byteFromPixel]++;
-            blueFile << byteFromPixel <<std::endl; 
+            for(int j = 0; j<inputFile.cols;j++)
+            {
+                byteFromPixel = inputFile.at<Vec3b>(i,j)[channel];
+                byteArray[byteFromPixel]++;
+                if(channel==0) redFile << byteFromPixel <<std::endl; 
+                if(channel==1) greenFile << byteFromPixel <<std::endl; 
+                if(channel==2) blueFile << byteFromPixel <<std::endl; 
+            }
         }
     }
     redFile.close();
