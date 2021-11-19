@@ -19,7 +19,6 @@ int main(int argc, char *argcv[]){
     std::ofstream greenFile ("green.txt");
     std::ofstream blueFile ("blue.txt");
     std::ofstream greyscaleFile ("greyscale.txt");
-    std::ofstream imageBytesFile("imageBytes.txt");
     // array que vai conter o numero de vezes que determinado byte ocorre | Array iniciado com as ocorrencias a zero
     int byteArray[256] = { };
 

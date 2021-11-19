@@ -31,18 +31,6 @@ int main(int argc, char *argcv[])
     newFile.setSampleRate(audioFile.getSampleRate()); 
     newFile.save(argcv[2],AudioFileFormat::Wave);
 
-    // Comparar samples de ambos os ficheiros
-    for (int i=0;i<newFile.getNumSamplesPerChannel();i++)
-    {
-        for(int channel = 0; channel < audioFile.getNumChannels(); channel++)
-        {
-            double sampleOriginal = audioFile.samples[channel][i];
-            double sampleFinal = newFile.samples[channel][i];
-            cout << "Sample original: " << sampleOriginal << endl;
-            cout << "Sample final: " << sampleFinal << endl;
-            cout << "Diferença Percentual: " << ((sampleOriginal-sampleFinal)/sampleOriginal)*100 << "%" << endl;
-        }
-    }
     return 0;
 }
 
