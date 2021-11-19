@@ -11,7 +11,6 @@ def main():
 
     data.plot(kind='bar')
     plt.ylabel('Number of Frequencies')
-    #plt.xticks(np.arange(-0.9, 0.9, 0.1))
     plt.gca().set_xticks(plt.gca().get_xticks()[::10])
     plt.xlabel('Frequency')
     plt.title('Left Channel Histogram')
@@ -27,7 +26,6 @@ def main():
 
     data.plot(kind='bar')
     plt.ylabel('Number of Frequencies')
-    #plt.xticks(np.arange(-0.9, 0.9, 0.1))
     plt.gca().set_xticks(plt.gca().get_xticks()[::10])
     plt.xlabel('Frequency')
     plt.title('Right Channel Histogram')
@@ -42,7 +40,6 @@ def main():
 
     data.plot(kind='bar')
     plt.ylabel('Number of Frequencies')
-    #plt.xticks(np.arange(-0.9, 0.9, 0.1))
     plt.gca().set_xticks(plt.gca().get_xticks()[::10])
     plt.xlabel('Frequency')
     plt.title('Mono Channel Histogram')

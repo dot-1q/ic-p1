@@ -34,6 +34,7 @@ int main(int argc, char *argcv[]){
             currentSample = audioFile.samples[channel][i];
             roundedSample = round(currentSample*100.0) / 100.0;   // Round the sample value to 3 decimal places 
 
+            // Insert into hashmap the sample, and the number of times it has occured
             if(freqMap.count(roundedSample))
             {
                 freqMap[roundedSample] = freqMap[roundedSample] +1;
@@ -41,6 +42,7 @@ int main(int argc, char *argcv[]){
                 freqMap[roundedSample] = 1;
             }
 
+            // Insert into hashmap the sample, and the number of times it has occured
             if(channel == 0){
                 if(leftFreqMap.count(roundedSample))
                 {
@@ -73,8 +75,10 @@ int main(int argc, char *argcv[]){
                 right = audioFile.samples[ch][sample]; 
             }
         }
+        // Mono audio should be the median of both channels
         double monoSample = (left + right) / 2;
         roundedSample = round(monoSample*100.0) / 100.0;   // Round the sample value to 3 decimal places 
+        // Insert the mono frequencies into their hashmap
         if(monoFreqMap.count(roundedSample))
         {
             monoFreqMap[roundedSample] = monoFreqMap[roundedSample] +1;
@@ -93,9 +97,7 @@ int main(int argc, char *argcv[]){
     float numberOfelements = freqMap.size();
     for (itr = freqMap.begin(); itr != freqMap.end(); itr++)
     {
-        // itr works as a pointer to pair<string, double>
-        // type itr->first stores the key part  and
-        // itr->second stores the value part
+        // Calculating the entropy
         p = itr->second / numberOfelements;
         entropy = entropy - (p*(log(p)/log(2)));
     }
@@ -105,25 +107,19 @@ int main(int argc, char *argcv[]){
     cout << "Creating data files for left,right and mono channels samples frequency" << endl;
     for (itr = leftFreqMap.begin(); itr != leftFreqMap.end(); itr++)
     {
-        // itr works as a pointer to pair<string, double>
-        // type itr->first stores the key part  and
-        // itr->second stores the value part
+        // Calculating the entropy
         leftFile << itr->first << ',' << itr->second << endl;
     }
 
     for (itr = rightFreqMap.begin(); itr != rightFreqMap.end(); itr++)
     {
-        // itr works as a pointer to pair<string, double>
-        // type itr->first stores the key part  and
-        // itr->second stores the value part
+        // Calculating the entropy
         rightFile << itr->first << ',' << itr->second << endl;
     }
 
     for (itr = monoFreqMap.begin(); itr != monoFreqMap.end(); itr++)
     {
-        // itr works as a pointer to pair<string, double>
-        // type itr->first stores the key part  and
-        // itr->second stores the value part
+        // Calculating the entropy
         monoFile << itr->first << ',' << itr->second << endl;
     }
     leftFile.close();

@@ -27,9 +27,11 @@ int main(int argc, char *argcv[])
             originalPixelSum = (original.at<Vec3b>(i,j)[0] + original.at<Vec3b>(i,j)[1] + original.at<Vec3b>(i,j)[2])/3;
             compPixelSum = (comp.at<Vec3b>(i,j)[0] + comp.at<Vec3b>(i,j)[1] + comp.at<Vec3b>(i,j)[2])/3;
             
+            //Obter o valor máximo 
             if(originalPixelSum > A) A = pow(originalPixelSum,2);
             error = error + pow((originalPixelSum-compPixelSum),2);
-
+            
+            // Pixel Error
             if((originalPixelSum-compPixelSum) > maxPixelError) maxPixelError = (originalPixelSum-compPixelSum);
         }
     }

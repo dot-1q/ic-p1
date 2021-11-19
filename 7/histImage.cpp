@@ -32,6 +32,7 @@ int main(int argc, char *argcv[]){
         {
             for(int j = 0; j<inputFile.cols;j++)
             {
+                // Store the byte in each corresponding file according to channel
                 byteFromPixel = inputFile.at<Vec3b>(i,j)[channel];
                 byteArray[byteFromPixel]++;
                 if(channel==0) redFile << byteFromPixel <<std::endl; 
@@ -54,12 +55,14 @@ int main(int argc, char *argcv[]){
     {
         if(byteArray[k] > 0)
         {
+            // Entropy Formula
             p = byteArray[k] / sizeInBytes;
             entropy = entropy - (p*(log(p)/log(256)));
         }
     }
-    std::cout << "Entropy of file: " << (entropy) << std::endl;
+    std::cout << "Colored Image Entropy: " << (entropy) << std::endl;
 
+    // GREY SCALE IMAGE //
 
     std::cout << "BEGINING GREYSCALE IMAGE ..." << std::endl;
     cvtColor(inputFile, greyScale, COLOR_RGB2GRAY);
@@ -71,6 +74,7 @@ int main(int argc, char *argcv[]){
     {
         for(int j = 0; j<greyScale.cols;j++)
         {
+            // Entropy Formula
             byteFromPixel = greyScale.at<uchar>(i,j);
             byteArrayGS[byteFromPixel]++;
             greyscaleFile << byteFromPixel <<std::endl; 
@@ -90,5 +94,5 @@ int main(int argc, char *argcv[]){
             entropy = entropy - (p*(log(p)/log(256)));
         }
     }
-    std::cout << "Entropy of GreyScale file: " << (entropy) << std::endl;
+    std::cout << "Greyscale Image Entropy: " << (entropy) << std::endl;
 } 

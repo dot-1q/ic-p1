@@ -18,6 +18,7 @@ int main(int argc, char *argcv[])
     {
         for(int j = 0;j<input.cols;j++)
        {
+           // Shift right 1 bit on each byte of the pixel
             output.at<Vec3b>(i,j)[0] = input.at<Vec3b>(i,j)[0]>>1;
             output.at<Vec3b>(i,j)[1] = input.at<Vec3b>(i,j)[1]>>1;
             output.at<Vec3b>(i,j)[2] = input.at<Vec3b>(i,j)[2]>>1;
