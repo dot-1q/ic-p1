@@ -44,7 +44,8 @@ def entropy(filename):
         if freq > 0:
             ent = ent + freq * math.log(freq, 2)
     ent = -ent
-    print('Shannon entropy: '+str(ent))
+    # cada byte sao 8 caracteres
+    print('Shannon entropy: '+str(ent/8))
 
 if __name__== "__main__":
     main()
