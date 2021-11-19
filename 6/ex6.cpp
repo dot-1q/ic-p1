@@ -99,7 +99,7 @@ int main(int argc, char *argcv[]){
         p = itr->second / numberOfelements;
         entropy = entropy - (p*(log(p)/log(2)));
     }
-    cout << "Entropy of audio file: " << entropy/100000 << endl;
+    cout << "Entropy of audio file: " << abs(entropy)/100000 << endl;
 
     
     cout << "Creating data files for left,right and mono channels samples frequency" << endl;
